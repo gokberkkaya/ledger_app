@@ -1,13 +1,14 @@
-const userModel = require('../models/user');
+const userService = require('../services/userService');
 
 async function createUser(req, res, next) {
     try {
-        const { name } = req.body;
-        const userId = await userModel.createUser(name);
+        const { name, password } = req.body;
 
-        res.status(201).json({ id: userId, name });
+        await userService.createUser(name, password);
+
+        res.status(201).json({ success: 'User created successfully.'});
     } catch (error) {
-        next(error);
+        res.status(400).json({ error: (error.message ? 'Invalid request!' : error) });
     }
 }
 

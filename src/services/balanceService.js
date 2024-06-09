@@ -23,4 +23,25 @@ async function getBalanceByUsername(username) {
     return await balanceRepository.getBalanceByUsername(username);
 }
 
-module.exports = { giveCreditToUser, getAllUserBalances, getBalanceByUsername };
+async function getBalanceAtTime(username, timestamp) {
+    const isUserExists = await userRepository.isUserExists(username);
+
+    if (!isUserExists) {
+        throw 'User does not exists!';
+    } else {
+        const balance = await balanceRepository.getBalanceAtTime(username, timestamp);
+
+        if (!balance) {
+            throw 'There is no balance value.';
+        }
+    }
+
+    return balance;
+}
+
+module.exports = {
+    giveCreditToUser,
+    getAllUserBalances,
+    getBalanceByUsername,
+    getBalanceAtTime
+};

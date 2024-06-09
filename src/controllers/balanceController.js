@@ -27,14 +27,27 @@ async function getBalanceByUsername(req, res, next) {
         const { username } = req.params;
         const balance = await balanceService.getBalanceByUsername(username);
 
-        res.status(200).json({ success: balance });
+        res.status(200).json({ balance });
     } catch (error) {
-        if (error.code === 'NOT_FOUND') {
-            res.status(404).json({ error: 'User not found' });
-        } else {
-            res.status(500).json({ error: 'Internal server error' });
-        }
+        res.status(500).json({ error: 'Internal server error' });
     }
 }
 
-module.exports = { giveCreditToUser, getAllUserBalances, getBalanceByUsername };
+async function getBalanceAtTime(req, res, next) {
+    try {
+        const { username, timestamp } = req.params;
+
+        const balance = await balanceService.getBalanceAtTime(username, timestamp);
+
+        res.status(200).json({ username, balance, timestamp });
+    } catch (error) {
+        res.status(400).json({ error });
+    }
+}
+
+module.exports = {
+    giveCreditToUser,
+    getAllUserBalances,
+    getBalanceByUsername,
+    getBalanceAtTime
+};

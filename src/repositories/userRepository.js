@@ -1,11 +1,15 @@
 const userModel = require('../models/User');
 
-async function isUserExists(name) {
-    return await userModel.isUserExists(name);
+async function isUserExists(username) {
+    return await userModel.isUserExists(username);
 }
 
-async function createUser({ name, password }) {
-    return await userModel.createUser({ name, password });
+async function createUser({ username, password, role }) {
+    return await userModel.createUser({ username, password, role });
 }
 
-module.exports = { isUserExists, createUser };
+async function getUserByUsername(username) {
+    return await userModel.getUserByUsername(username);
+}
+
+module.exports = { isUserExists, createUser, getUserByUsername };
